@@ -1,0 +1,171 @@
+/* Changed font from Inter to Outfit (a close, available alternative to Google Sans) */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+/* Base body styles */
+body {
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease-in-out;
+    min-height: 100vh;
+}
+
+/* Styles for Project Links in the Work section */
+.project-link {
+    transition: transform 0.4s ease-out, color 0.4s ease-out;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 1;
+}
+.project-link:hover {
+    /* Bright green hover color */
+    color: #4ade80;  
+    transform: translateX(15px);
+}
+
+/* Styles for the Call-to-Action button */
+.cta-button {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+.cta-button:hover {
+    background-color: #4ade80;
+    color: #0d0d0d;
+    transform: translateY(-2px);
+    /* Shadow uses the bright green color */
+    box-shadow: 0 10px 15px -3px rgba(74, 222, 128, 0.3), 0 4px 6px -4px rgba(74, 222, 128, 0.3);
+}
+
+/* Underline effect for Navigation links */
+.link-underline {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+.link-underline::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    /* Use currentColor so the underline matches the text color in both modes */
+    background-color: currentColor; 
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+.link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* Custom shadow utility class (used on the hero text block) */
+.shadow-custom-lg {
+    /* Shadow remains light green for consistency in both modes */
+    box-shadow: 0 25px 50px -12px rgba(74, 222, 128, 0.4), 0 10px 10px -5px rgba(74, 222, 128, 0.2);
+}
+
+/* Custom styles for the animation canvas in the Hero section */
+#bat-animation-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Ensures the canvas doesn't block clicks on the text/image below it */
+    pointer-events: none; 
+    z-index: -1; /* Positioned behind the main content */
+}
+
+/* --- Chaos to Order Text Animation Styles --- */
+
+/* This sets up the 3D space for the letters to move across the screen */
+.animated-line {
+    overflow: hidden;
+    perspective: 1000px; /* Stronger perspective for a deeper 3D feel */
+}
+
+/* This class will be dynamically added by JavaScript to each *letter* */
+.letter-reveal {
+    display: inline-block;
+    opacity: 0;
+    transform-style: preserve-3d;
+    
+    /* Animation: 1.5s total duration for the wander and settle */
+    animation: letterWander 1.5s cubic-bezier(0.1, 0.7, 0.2, 1) forwards;
+}
+
+/* The complex 3D keyframe animation for "Wandering/Settling" */
+@keyframes letterWander {
+    0% {
+        opacity: 0;
+        /* Start position: Extremely far and scattered */
+        transform: translate3d(
+            calc(var(--rand-x) * 50vw), 
+            calc(var(--rand-y) * 50vh), 
+            calc(var(--rand-z) * 1000px)
+        ) rotateX(calc(var(--rand-rot) * 90deg));
+    }
+    10% {
+        opacity: 1; /* Quick fade in */
+    }
+    80% {
+        /* Slow movement towards the final position */
+        transform: translate3d(
+            calc(var(--rand-x) * 10vw), 
+            calc(var(--rand-y) * 10vh), 
+            calc(var(--rand-z) * 100px)
+        ) rotateX(calc(var(--rand-rot) * 10deg));
+    }
+    100% {
+        opacity: 1;
+        /* Final state: reset to normal, visible position */
+        transform: translate3d(0, 0, 0) rotateX(0deg);
+    }
+}
+
+/* --- Image Scroll Animation Classes (FIXED FOR SMOOTH SCALE) --- */
+
+/* The container only handles the transition property and transforms */
+#owl-container {
+    /* IMPORTANT: The transition now includes the transform property */
+    transition: all 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+    box-shadow: none; 
+    border-radius: 0; 
+    overflow: visible; 
+    
+    /* Initial state: Large size, positioned in the center, scale(1) is the base */
+    /* The translate3d(-50%, -50%, 0) part is managed by the JS in the handleMouseMove for parallax */
+    transform: translate3d(-50%, -50%, 0) scale(1);
+}
+
+/* Base image style (large, square, and initially slightly rounded) */
+#owl-container img {
+    /* Ensures the image itself is transitioned for its border-radius change */
+    transition: border-radius 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+    width: 100%; 
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem; 
+}
+
+/* Defines the size and position of the container when scrolled */
+.owl-scroll-state {
+    position: fixed !important; 
+    /* NEW POSITION: Move to the top-left (without the -50% centering adjustment) */
+    top: 100px !important; 
+    left: 50px !important; 
+    z-index: 50; 
+    border: none; 
+    border-radius: 0; 
+    /* Hide overflow once scaled to clip the corners to a circle */
+    overflow: hidden; 
+    
+    /* NEW SCALE: Shrink the whole element (container + image) */
+    /* The scale is applied here and maintained by the JS parallax */
+    transform: scale(0.2); 
+}
+
+.owl-scroll-state img {
+    /* Final state: fully round */
+    border-radius: 50%; 
+}
