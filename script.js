@@ -282,6 +282,8 @@ function hideStoriesShowcase() {
     if (screenContent) {
         screenContent.style.transform = 'translateX(0%)';
     }
+    // Also hide the poster gallery if it's part of the showcase
+    hidePosterGallery();
 }
 
 function hidePosterGallery() {
@@ -290,8 +292,6 @@ function hidePosterGallery() {
         posterGallery.classList.add('max-h-0', 'opacity-0');
     }
 }
-
-// ... (Rest of your functions: scrollWithOffset, startProductCarousel, triggerProductAnimation, triggerPosterGallery, updatePhoneHeader, handleTabClick ... are all unchanged) ...
 // --- HELPER FUNCTION FOR OFFSET SCROLLING ---
 function scrollWithOffset(element, offset) {
     const elementPosition = element.getBoundingClientRect().top;
@@ -324,9 +324,9 @@ function triggerProductAnimation() {
     if (!showcaseSection || !phoneFrame) return;
     const isHidden = showcaseSection.classList.contains('max-h-0');
     if (isHidden) {
-        hidePosterGallery();
+        hidePosterGallery(); // Hide posters when showing stories
         showcaseSection.classList.remove('max-h-0', 'opacity-0', 'overflow-hidden');
-        showcaseSection.classList.add('max-h-[1000px]', 'opacity-100');
+        showcaseSection.classList.add('max-h-[1000px]', 'opacity-100'); // Note: max-h might need to be bigger
         showcaseSection.scrollIntoView({
             behavior: 'smooth',
             block: 'center'
@@ -338,6 +338,8 @@ function triggerProductAnimation() {
         startProductCarousel();
         console.log("Product Showcase (Stories) revealed and scrolled to center.");
     } else {
+        // If it's already open, just hide posters and scroll
+        hidePosterGallery();
         showcaseSection.scrollIntoView({
             behavior: 'smooth',
             block: 'center'
@@ -345,7 +347,7 @@ function triggerProductAnimation() {
         if (!window.productCarouselInterval) {
             startProductCarousel();
         }
-        console.log("Product Showcase (Stories) already open, re-scrolling to center.");
+        console.log("Product Showcase (Stories) already open, hiding posters and re-scrolling.");
     }
 }
 // 検 MODIFIED FUNCTION: TRIGGER POSTER GALLERY (Always shows and scrolls with offset)
@@ -353,14 +355,37 @@ function triggerPosterGallery() {
     if (!posterGallery || !showcaseSection) return;
     const isHidden = posterGallery.classList.contains('max-h-0');
     const posterHeading = posterGallery.querySelector('h2'); 
+    
+    // First, ensure the parent container is open
+    const storiesIsHidden = showcaseSection.classList.contains('max-h-0');
+    if (storiesIsHidden) {
+         // Open parent showcase, but don't start carousel or hide posters
+        showcaseSection.classList.remove('max-h-0', 'opacity-0', 'overflow-hidden');
+        showcaseSection.classList.add('max-h-[1000px]', 'opacity-100'); // This max-h must be large enough for both
+        
+        // Scale up phone frame so it looks consistent
+        setTimeout(() => {
+            phoneFrame.classList.add('scale-100');
+            phoneFrame.classList.remove('scale-0');
+        }, 300);
+    }
+
+    // Now, reveal the poster gallery
     if (isHidden) {
-        const storiesIsHidden = showcaseSection.classList.contains('max-h-0');
-        if (storiesIsHidden) {
-             triggerProductAnimation(); 
-        }
         posterGallery.classList.remove('max-h-0', 'opacity-0', 'overflow-hidden');
         posterGallery.classList.add('max-h-[2000px]', 'opacity-100'); 
     }
+    
+    // Stop the stories carousel
+    if (window.productCarouselInterval) {
+        clearInterval(window.productCarouselInterval);
+        window.productCarouselInterval = null;
+    }
+
+    // Adjust parent max-height to fit both
+    showcaseSection.classList.remove('max-h-[1000px]');
+    showcaseSection.classList.add('max-h-[3000px]'); // Needs to be large enough for phone + posters
+
     if (posterHeading) {
         const headerHeightOffset = 70; 
         setTimeout(() => {
@@ -449,7 +474,8 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'pie',
             plugins: [ChartDataLabels],
             data: {
-                labels: ['Instagram stories', 'Posters', 'Product'],
+                // FIX 3: Pie Chart Label
+                labels: ['Instagram\nstories', 'Posters', 'Product'],
                 datasets: [{
                     data: [33.3, 33.3, 33.4],
                     backgroundColor: colors,
@@ -463,7 +489,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (elements.length > 0) {
                         const firstElement = elements[0];
                         const label = chart.data.labels[firstElement.index];
-                        if (label === 'Instagram stories') { 
+                        // Use startsWith to account for the \n
+                        if (label.startsWith('Instagram')) { 
                             triggerProductAnimation();
                         } else if (label === 'Posters') {
                             triggerPosterGallery(); 
