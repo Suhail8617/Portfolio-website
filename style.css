@@ -15,6 +15,15 @@ body {
     display: inline-block;
     line-height: 1;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .project-link:hover {
     /* Bright green hover color */
     color: #4ade80;  
@@ -125,19 +134,30 @@ body {
 
 /* --- Image Scroll Animation Classes (FIXED FOR SMOOTH SCALE) --- */
 
-/* The #owl-container classes are now prefixed with 'lg:' in the HTML
-  so they only apply on desktop. This section defines
-  the desktop-only scroll/shrink behavior.
-*/
+/* The container only handles the transition property and transforms */
 #owl-container {
-    /* The base 'lg:absolute' positioning is set in the HTML.
-      The JS 'translate3d' for parallax is applied here.
-    */
+    /* IMPORTANT: The transition now includes the transform property */
     transition: all 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
     box-shadow: none; 
     border-radius: 0; 
     overflow: visible; 
+    
+    /* Initial state: Large size, positioned in the center, scale(1) is the base */
     transform: translate3d(-50%, -50%, 0) scale(1);
+}
+/* Soft speech bubble tail */
+#contact-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 25px;
+    width: 18px;
+    height: 18px;
+    background: inherit;
+    border-left: inherit;
+    border-bottom: inherit;
+    transform: rotate(45deg);
+    border-radius: 4px;
 }
 
 /* Base image style (large, square, and initially slightly rounded) */
@@ -150,48 +170,96 @@ body {
     border-radius: 0.5rem; 
 }
 
-/* Defines the size and position of the container when scrolled (Desktop) */
+/* Defines the size and position of the container when scrolled */
 .owl-scroll-state {
-    position: fixed !important; 
-    top: 100px !important; 
-    left: 50px !important; 
-    z-index: 50; 
-    border: none; 
-    border-radius: 0; 
-    overflow: hidden; 
-    
-    /* NEW SCALE: Shrink the whole element (container + image) */
-    transform: scale(0.2); 
+    position: fixed !important;
+    bottom: 30px !important;   /* distance from bottom */
+    left: 30px !important;     /* distance from left */
+    transform: scale(0.2) !important; /* shrink to desired size */
+    width: auto !important;    /* let width be automatic */
+    height: auto !important;   /* let height be automatic */
+    z-index: 50;
+    border-radius: 50%;        /* fully round */
+    overflow: visible !important; /* prevent cropping */
 }
+
 
 .owl-scroll-state img {
-    /* Final state: fully round */
-    border-radius: 50%; 
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important; /* avoids cropping */
+    border-radius: 50%;
 }
 
-/* --- RESPONSIVE FIXES FOR MOBILE --- */
-@media (max-width: 1023px) { /* Targets screens smaller than lg (1024px) */
-    
-    /* FIX 1: This overrides the 'lg:absolute' classes from the HTML,
-      turning the owl container into a normal, stacking grid item on mobile.
-    */
-    #owl-container {
-        position: relative !important; 
-        top: auto !important;
-        left: auto !important;
-        /* Resets all transforms from JS or HTML */
-        transform: none !important; 
-        /* Adds space above it so it's below the UL */
-        margin-top: 2rem; 
-        width: 90%; /* Make it slightly smaller than full width */
-        margin-left: auto;
-        margin-right: auto;
-    }
 
-    /* This hides the "scrolled" state icon on mobile,
-      since the JS functions that control it are now disabled on mobile.
-    */
-    .owl-scroll-state {
-        display: none !important;
+/* -------------------------------------------------------------
+   VISUAL STRATEGY CAROUSEL STYLES
+   ------------------------------------------------------------- */
+
+/* Container for the horizontal scroller */
+#vs-scroll {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Make each video element animate smoothly for transform/opacity/shadow */
+#vs-scroll video {
+    transition: transform 0.4s ease, opacity 0.4s ease, box-shadow 0.4s ease;
+    will-change: transform, opacity;
+    display: block;
+}
+
+/* Active (centered) video */
+#vs-scroll video.active {
+    transform: scale(1.05) !important;
+    opacity: 1 !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+}
+
+/* Inactive videos */
+#vs-scroll video.inactive {
+    transform: scale(0.92);
+    opacity: 0.6;
+    box-shadow: none;
+}
+
+/* Slight scale for peeking item wrapper (keeps the visual peek) */
+#vs-scroll .peek {
+    opacity: 0.6;
+    transform: scale(0.97);
+}
+
+/* Responsive tweaks so the peek looks correct across widths */
+@media (max-width: 768px) {
+    #vs-scroll .snap-start {
+        width: 85% !important;
     }
+}
+
+@media (min-width: 769px) {
+    #vs-scroll .snap-start {
+        width: 32% !important;
+    }
+}
+
+/* Button styles — ensure high-contrast circular nav buttons */
+#vs-prev, #vs-next {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Make sure modal nav buttons are visible on small screens */
+#modal-prev, #modal-next {
+    opacity: 0.95;
+}
+
+/* Accessibility focus outlines */
+button:focus {
+    outline: 3px solid rgba(74,222,128,0.18);
+    outline-offset: 2px;
+}
+
+/* Minimal helper to preserve visual rhythm */
+.vs-gap {
+    height: 8px;
 }
