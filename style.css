@@ -169,3 +169,32 @@ body {
     /* Final state: fully round */
     border-radius: 50%; 
 }
+
+/* --- NEW RESPONSIVE FIXES FOR MOBILE --- */
+@media (max-width: 1023px) { /* Targets screens smaller than lg (1024px) */
+    
+    /* This is the main fix. 
+      It overrides the 'absolute' positioning from the HTML 
+      and the 'translate' from the JS, turning the owl 
+      into a normal, stacking element on mobile.
+    */
+    #owl-container {
+        position: relative !important; 
+        top: auto !important;
+        left: auto !important;
+        /* Resets all transforms */
+        transform: none !important; 
+        /* Adds some space above it */
+        margin-top: 2rem; 
+        width: 90%; /* Make it slightly smaller than full width */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* This hides the "scrolled" state on mobile,
+      since the main JS functions that control it are now disabled.
+    */
+    .owl-scroll-state {
+        display: none !important;
+    }
+}
