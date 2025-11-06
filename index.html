@@ -65,15 +65,18 @@
                 
                 <button id="theme-toggle" class="p-2 rounded-full text-stone-100 dark:text-darkBrown hover:bg-stone-700/50 dark:hover:bg-stone-300/50 transition duration-300 ml-4" aria-label="Toggle theme">
                     <span id="theme-toggle-icon">
-                        </span>
+                        <!-- Icon inserted by JS -->
+                    </span>
                 </button>
             </nav>
+            <!-- Mobile Menu Button -->
             <button id="mobile-menu-button" class="md:hidden text-current focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
     </header>
 
+    <!-- Mobile Menu (Hidden by default) -->
     <div id="mobile-menu" class="fixed top-0 left-0 w-full h-screen bg-darkBrown dark:bg-stone-100 z-20 transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
         <nav class="flex flex-col items-center justify-center h-full space-y-8 text-xl">
             <a href="#hero-canvas-container" class="link-underline mobile-link">Home</a>
@@ -90,10 +93,16 @@
             
             <canvas id="bat-animation-canvas"></canvas>
 
+            <!-- 
+              FIX 1: Hero Layout 
+              - Removed 'order-first' from the UL div.
+              - Moved '#owl-container' div to be the last child of this grid.
+              - Prefixed '#owl-container' positioning classes with 'lg:' so they only apply on desktop.
+            -->
             <div class="z-0 w-full max-w-7xl grid grid-cols-1 lg:grid-cols-4 gap-4 items-end p-2">
                 
+                <!-- Item 1: The H1 -->
                 <div class="lg:col-span-3 relative">
-                    
                     <div class="text-left p-2 mx-auto w-full">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-none tracking-tight select-none">
                             <span class="animated-line block text-stone-400 opacity-70 dark:text-stone-600">CREATIVE</span> 
@@ -102,30 +111,29 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-1 p-4 pt-0 lg:p-0 z-20 lg:order-last text-left lg:text-right">
-                    
+                <!-- Item 2: The UL (REMOVED 'order-first lg:order-last') -->
+                <div class="lg:col-span-1 p-4 pt-0 lg:p-0 z-20 text-left lg:text-right">
                     <ul id="right-side-list" class="font-extrabold leading-tight tracking-tight select-none list-none space-y-1 
                                  opacity-0 transition-opacity duration-1000 ease-in">
                         
                         <li id="social-media-link" class="block text-lg md:text-2xl text-stone-500 dark:text-stone-600 cursor-pointer hover:underline transition-colors duration-300">
                             Social media managing
                         </li>
-
                         <li id="product-link" class="block text-lg md:text-2xl text-stone-300 dark:text-stone-800 cursor-pointer hover:underline transition-colors duration-300">Logo designing</li>
-                        
                         <li class="block text-lg md:text-2xl text-stone-500 dark:text-stone-600">Visual strategy</li>
                         <li class="block text-lg md:text-2xl text-stone-300 dark:text-stone-800">Graphic Designing</li>
                     </ul>
                 </div>
-            </div>
-            
-            <div id="owl-container" class="z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full sm:w-2/3 lg:w-1/2 transition-transform duration-300">
-                <img 
-                    id="owl-image" 
-                    src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/IMG_2644.PNG" 
-                    alt="Creative Portfolio Asset" 
-                    class="w-full h-auto rounded-xl object-contain mx-auto transition-transform duration-300" 
-                />
+
+                <!-- Item 3: The Image (MOVED HERE, classes prefixed with 'lg:') -->
+                <div id="owl-container" class="z-10 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 w-full sm:w-2/3 lg:w-1/2 transition-transform duration-300">
+                    <img 
+                        id="owl-image" 
+                        src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/IMG_2644.PNG" 
+                        alt="Creative Portfolio Asset" 
+                        class="w-full h-auto rounded-xl object-contain mx-auto transition-transform duration-300" 
+                    />
+                </div>
             </div>
 
         </section>
@@ -134,7 +142,12 @@
             <h2 class="text-4xl sm:text-6xl lg:text-8xl font-extrabold text-stone-100 dark:text-darkBrown mb-4 text-center">
                 SOCIAL MEDIA
             </h2>
-            <h3 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-stone-500 dark:text-stone-600 mb-10 text-center">
+            <!-- 
+              FIX 2: Social Media Text
+              - Changed base text size to 'text-2xl' (was text-3xl)
+              - Changed text color to match h2 (was stone-500/600)
+            -->
+            <h3 class="text-2xl sm:text-5xl lg:text-6xl font-extrabold text-stone-100 dark:text-darkBrown mb-10 text-center">
                 MANAGING
             </h3>
             
@@ -143,6 +156,10 @@
             </div>
         </section>
 
+        <!-- 
+          FIX 4: Section Overlap
+          - Moved #poster-gallery section to be INSIDE #product-showcase section
+        -->
         <section id="product-showcase" class="max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-in-out">
             <div class="relative w-full flex justify-center items-center py-24">
                 
@@ -249,27 +266,29 @@
                             opacity: 0.2; filter: blur(1.5px); z-index: 0;"></div>
 
             </div>
-        </section>
 
-        <section id="poster-gallery" class="max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-in-out py-12">
-            <h2 class="text-4xl sm:text-5xl font-extrabold text-stone-300 dark:text-stone-700 mb-10 text-center">
-                Poster Designs
-            </h2>
-            <div id="poster-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/dream%20property%20swiming%20pool.jpg" alt="Poster Design 1" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/city%20village%20dream%20property%20poster%202%20(1)-min.jpg" alt="Poster Design 2" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/republic%20day.png" alt="Poster Design 3" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/qatar%20national%20day.jpg" alt="Poster Design 4" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/IMG_2663.PNG" alt="Poster Design 5" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/booma%20poster%20copy.jpg" alt="Poster Design 6" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/shawarma%20final.png" alt="Poster Design 7" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/grooming%20-01-01.jpg" alt="Poster Design 8" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/WhatsApp%20Image%202025-11-02%20at%208.01.46%20PM.jpeg" alt="Poster Design 9" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/WhatsApp%20Image%202025-11-02%20at%203.47.18%20PM%20(3).jpeg" alt="Poster Design 10" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/harmonius_kerala_poster%201.png" alt="Poster Design 11" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-                <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/rainy%20nights%20poster%205.png" alt="Poster Design 12" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
-            </div>
-        </section>
+            <!-- MOVED POSTER GALLERY HERE -->
+            <section id="poster-gallery" class="max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-in-out py-12">
+                <h2 class="text-4xl sm:text-5xl font-extrabold text-stone-300 dark:text-stone-700 mb-10 text-center">
+                    Poster Designs
+                </h2>
+                <div id="poster-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/dream%20property%20swiming%20pool.jpg" alt="Poster Design 1" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/city%20village%20dream%20property%20poster%202%20(1)-min.jpg" alt="Poster Design 2" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/republic%20day.png" alt="Poster Design 3" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/qatar%20national%20day.jpg" alt="Poster Design 4" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/IMG_2663.PNG" alt="Poster Design 5" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/booma%20poster%20copy.jpg" alt="Poster Design 6" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/shawarma%20final.png" alt="Poster Design 7" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/grooming%20-01-01.jpg" alt="Poster Design 8" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/WhatsApp%20Image%202025-11-02%20at%208.01.46%20PM.jpeg" alt="Poster Design 9" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/WhatsApp%20Image%202025-11-02%20at%203.47.18%20PM%20(3).jpeg" alt="Poster Design 10" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/harmonius_kerala_poster%201.png" alt="Poster Design 11" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                    <img src="https://raw.githubusercontent.com/Suhail8617/Portfolio/main/rainy%20nights%20poster%205.png" alt="Poster Design 12" class="w-full h-auto object-cover rounded-lg shadow-xl hover:scale-[1.02] transition duration-300 cursor-zoom-in">
+                </div>
+            </section>
+
+        </section> <!-- End of product-showcase -->
 
 
         <section id="visual-strategy" class="py-32 min-h-[80vh] flex flex-col justify-center items-center border-t border-darkBrown dark:border-stone-200 mt-24">
