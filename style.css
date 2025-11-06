@@ -125,16 +125,18 @@ body {
 
 /* --- Image Scroll Animation Classes (FIXED FOR SMOOTH SCALE) --- */
 
-/* The container only handles the transition property and transforms */
+/* The #owl-container classes are now prefixed with 'lg:' in the HTML
+  so they only apply on desktop. This section defines
+  the desktop-only scroll/shrink behavior.
+*/
 #owl-container {
-    /* IMPORTANT: The transition now includes the transform property */
+    /* The base 'lg:absolute' positioning is set in the HTML.
+      The JS 'translate3d' for parallax is applied here.
+    */
     transition: all 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
     box-shadow: none; 
     border-radius: 0; 
     overflow: visible; 
-    
-    /* Initial state: Large size, positioned in the center, scale(1) is the base */
-    /* The translate3d(-50%, -50%, 0) part is managed by the JS in the handleMouseMove for parallax */
     transform: translate3d(-50%, -50%, 0) scale(1);
 }
 
@@ -148,20 +150,17 @@ body {
     border-radius: 0.5rem; 
 }
 
-/* Defines the size and position of the container when scrolled */
+/* Defines the size and position of the container when scrolled (Desktop) */
 .owl-scroll-state {
     position: fixed !important; 
-    /* NEW POSITION: Move to the top-left (without the -50% centering adjustment) */
     top: 100px !important; 
     left: 50px !important; 
     z-index: 50; 
     border: none; 
     border-radius: 0; 
-    /* Hide overflow once scaled to clip the corners to a circle */
     overflow: hidden; 
     
     /* NEW SCALE: Shrink the whole element (container + image) */
-    /* The scale is applied here and maintained by the JS parallax */
     transform: scale(0.2); 
 }
 
@@ -170,29 +169,27 @@ body {
     border-radius: 50%; 
 }
 
-/* --- NEW RESPONSIVE FIXES FOR MOBILE --- */
+/* --- RESPONSIVE FIXES FOR MOBILE --- */
 @media (max-width: 1023px) { /* Targets screens smaller than lg (1024px) */
     
-    /* This is the main fix. 
-      It overrides the 'absolute' positioning from the HTML 
-      and the 'translate' from the JS, turning the owl 
-      into a normal, stacking element on mobile.
+    /* FIX 1: This overrides the 'lg:absolute' classes from the HTML,
+      turning the owl container into a normal, stacking grid item on mobile.
     */
     #owl-container {
         position: relative !important; 
         top: auto !important;
         left: auto !important;
-        /* Resets all transforms */
+        /* Resets all transforms from JS or HTML */
         transform: none !important; 
-        /* Adds some space above it */
+        /* Adds space above it so it's below the UL */
         margin-top: 2rem; 
         width: 90%; /* Make it slightly smaller than full width */
         margin-left: auto;
         margin-right: auto;
     }
 
-    /* This hides the "scrolled" state on mobile,
-      since the main JS functions that control it are now disabled.
+    /* This hides the "scrolled" state icon on mobile,
+      since the JS functions that control it are now disabled on mobile.
     */
     .owl-scroll-state {
         display: none !important;
